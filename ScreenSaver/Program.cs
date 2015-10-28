@@ -67,8 +67,13 @@ namespace ScreenSaver
         {
             foreach (Screen screen in Screen.AllScreens)
             {
-                ScreenSaverForm screensaver = new ScreenSaverForm(screen.Bounds);
-                screensaver.Show();
+                if (screen.Primary)
+                {
+                    ScreenSaverForm screensaver = new ScreenSaverForm(screen.Bounds, screen.Primary);
+                    screensaver.Show();
+                }
+
+
             }
         }
 

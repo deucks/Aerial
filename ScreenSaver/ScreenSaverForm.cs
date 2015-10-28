@@ -27,16 +27,24 @@ namespace ScreenSaver
         private Point mouseLocation;
         private bool previewMode = false;
         private Random rand = new Random();
+        private bool isPrimary = false;
+
+
+        private int screenLeft = SystemInformation.VirtualScreen.Left;
+        private int screenTop = SystemInformation.VirtualScreen.Top;
+        private int screenWidth = SystemInformation.VirtualScreen.Width;
+        private int screenHeight = SystemInformation.VirtualScreen.Height;
 
         public ScreenSaverForm()
         {
             InitializeComponent();
         }
 
-        public ScreenSaverForm(Rectangle Bounds)
+        public ScreenSaverForm(Rectangle Bounds, bool isPrimary)
         {
             InitializeComponent();
             this.Bounds = Bounds;
+            this.isPrimary = isPrimary;
         }
 
         public ScreenSaverForm(IntPtr PreviewWndHandle)
@@ -70,6 +78,9 @@ namespace ScreenSaver
             this.axWindowsMediaPlayer1.enableContextMenu = false;
             Application.AddMessageFilter(new IgnoreMouseClickMessageFilter(this, axWindowsMediaPlayer1));
 
+            this.Size = new Size(screenWidth, screenHeight);
+            this.Location = new Point(screenLeft, screenTop);
+
             this.axWindowsMediaPlayer1.Size = this.Size;
             this.axWindowsMediaPlayer1.Top = 0;
             this.axWindowsMediaPlayer1.Left = 0;
@@ -90,8 +101,10 @@ namespace ScreenSaver
             axWindowsMediaPlayer1.currentPlaylist = list;
 
             //this.axWindowsMediaPlayer1.URL = @"http://a1.phobos.apple.com/us/r1000/000/Features/atv/AutumnResources/videos/b2-1.mov";
+
             this.axWindowsMediaPlayer1.Ctlcontrols.play();
-            
+
+
         }
 
         private void AxWindowsMediaPlayer1_KeyPressEvent(object sender, AxWMPLib._WMPOCXEvents_KeyPressEvent e)
